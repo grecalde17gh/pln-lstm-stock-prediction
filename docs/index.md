@@ -291,20 +291,18 @@ Incorporar los datos de sentimientos permitió mejorar la precisión del modelo 
 
 En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 3.1 (datos financieros + análisis de sentimientos).
 
-| Acción  | MSE       | MSE (con PNL) |
-|---------|-----------|---------------|
-| AAPL    | 38.080    | 23.505        |
-| AMZN    | 14.764    | 17.555        |
-| GOOGL   | 18.694    | 20.392        |
-| NVDA    | 455.809   | 26.863        |
-| NFLX    | 267.251   | 340.965       |
-| GME     | 14.362    | 16.942        |
+| Acción  | MSE (M1)   | MSE (M2)   |
+|---------|------------|------------|
+| AAPL    |  38.080    |  23.505    |
+| AMZN    |  14.764    |  17.555    |
+| GOOGL   |  18.694    |  20.392    |
+| NVDA    | 455.809    |  26.863    |
+| NFLX    | 267.251    | 340.965    |
+| GME     |  14.362    |  16.942    |
 
-El **Modelo 3.1** que incorpora el análisis de sentimientos muestra una mejora en todas las acciones, con un menor MSE en comparación con el Modelo 1.
 
 ## Comparación de Modelos: Métrica R²
 
-A continuación, se presenta una tabla que compara el **R² (Coeficiente de Determinación)** para las cinco acciones entre el Modelo 1 y el Modelo 3.1.
 
 | Acción  | R²         | R² (con PNL)  |
 |---------|------------|---------------|
@@ -315,12 +313,6 @@ A continuación, se presenta una tabla que compara el **R² (Coeficiente de Dete
 | NFLX    | 0.9698     | 0.9596        |
 | GME     | 0.6126     | 0.4947        |
 
-En términos de **R²**, el **Modelo 3.1** también muestra una mejora, con valores más cercanos a 1, lo que indica un mejor ajuste de las predicciones a los datos reales.
-
-MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones comparadas con el Modelo 1, lo que demuestra que la incorporación del análisis de sentimientos mejora el rendimiento del modelo.
-R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
-
-
 
 
 ## Conclusiones
@@ -328,29 +320,21 @@ R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que e
 Este proyecto presentó un enfoque para la predicción del precio de acciones utilizando redes LSTM y combinando datos financieros con análisis de sentimientos de noticias. A lo largo del proceso, se implementaron y compararon dos modelos principales:
 
 1. **Modelo 1**: Basado únicamente en datos financieros históricos.
-2. **Modelo 3.1**: Basado en datos financieros y análisis de sentimientos de noticias.
+2. **Modelo 2**: Basado en datos financieros y análisis de sentimientos de noticias.
 
-### Principales Hallazgos:
+Impacto mixto del análisis de sentimientos: El Modelo 2 mejoró las predicciones para algunas acciones como NVDA y MSFT, pero empeoró para otras como AMZN, GOOGL, NFLX, y GME. Esto indica que el análisis de sentimientos puede ser beneficioso en ciertos contextos, pero en otros, puede no ser tan relevante o incluso contraproducente.
 
-- **Mejor rendimiento con el análisis de sentimientos**: El **Modelo 3.1**, que incorpora el análisis de sentimientos, mostró mejoras significativas en comparación con el **Modelo 1**. En todas las acciones evaluadas, el Modelo 3.1 redujo el error de predicción (MSE) y obtuvo mejores resultados en la métrica **R²**, indicando que el análisis de sentimientos proporciona un valor adicional al modelo al capturar mejor los movimientos del mercado impulsados por eventos noticiosos.
-- **Análisis de noticias**: La incorporación de análisis de noticias con la herramienta VADER permitió cuantificar el impacto que las emociones y percepciones del mercado pueden tener sobre los precios de las acciones. Este análisis ofrece una capa adicional de información que puede ser crucial en la toma de decisiones financieras.
+En acciones como NVDA, que han mostrado alta volatilidad en el mercado, el Modelo 2 ofrece una mejora significativa en comparación con el Modelo 1, lo que sugiere que el análisis de sentimientos puede ayudar a capturar mejor las fluctuaciones en acciones más volátiles.
 
-### Métricas Clave:
+Para algunas acciones, como NFLX y GOOGL, la diferencia entre los modelos es menor, lo que sugiere que el análisis de sentimientos no añade mucho valor en estas situaciones, y los datos financieros históricos pueden ser suficientes para realizar predicciones precisas.
 
-- **MSE**: La inclusión de datos de sentimientos redujo el MSE en un promedio del 20% en las cinco acciones evaluadas.
-- **R²**: El coeficiente de determinación aumentó en todas las acciones, lo que indica que el Modelo 3.1 ajustó mejor las predicciones a los datos reales.
-
----
 
 ## Trabajo Futuro
 
-Aunque los resultados del proyecto son alentadores, existen áreas para mejorar y explorar en el futuro:
-
 1. **Incorporación de más fuentes de datos de sentimientos**: Aunque VADER fue útil para analizar el sentimiento de noticias, otras técnicas avanzadas de PLN, como modelos basados en transformadores (por ejemplo, BERT), podrían proporcionar análisis más precisos y detallados del contexto y sentimiento de las noticias.
 2. **Optimización de Hiperparámetros**: Podría realizarse un ajuste más detallado de los hiperparámetros del modelo LSTM, como el tamaño del lote, el número de capas y las tasas de aprendizaje, utilizando técnicas como búsqueda en cuadrícula o optimización bayesiana.
-3. **Predicción a Largo Plazo**: Si bien este proyecto se centró en la predicción a corto plazo, se podría explorar la capacidad del modelo para realizar predicciones a largo plazo, lo que podría ser útil para estrategias de inversión más sostenibles.
+3. **Posibles mejoras**: Dado que el análisis de sentimientos no ha funcionado de manera consistente en todas las acciones, sería útil explorar otras fuentes de datos o enfoques para incorporar el análisis de sentimientos (por ejemplo, usando otro modelo de análisis de sentimientos más avanzado o ajustando el preprocesamiento de los datos de noticias).
 4. **Análisis de Sentimientos en Redes Sociales**: Además de las noticias, incorporar datos de redes sociales como Twitter o Reddit, que tienen un impacto significativo en los mercados financieros, podría mejorar aún más las predicciones.
 
-En resumen, este proyecto ha demostrado que la combinación de datos financieros con análisis de sentimientos mejora la precisión de los modelos predictivos de precios de acciones, proporcionando una herramienta valiosa para la toma de decisiones en el ámbito financiero.
-
+En resumen, el Modelo 2 muestra una mejora notable en algunas acciones (particularmente las más volátiles), pero no en todas. Es importante analizar cada acción individualmente y considerar otros factores para mejorar el rendimiento general del modelo que incluye el análisis de sentimientos.
 ---
