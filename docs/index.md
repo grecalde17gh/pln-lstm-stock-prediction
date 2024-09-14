@@ -73,6 +73,7 @@ precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-0
 # Mostrar los primeros registros de los datos de AAPL
 precios['AAPL'].head()```
 
+
 ## Preparación de Datos
 
 El éxito de un modelo de predicción depende en gran medida de la calidad de los datos utilizados. En este proyecto, se recopilan datos financieros históricos y noticias de varias fuentes. A continuación, se describen las etapas de preparación de los datos.
@@ -102,6 +103,7 @@ precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-0
 # Mostrar los primeros registros de los datos de AAPL
 precios['AAPL'].head()```
 
+
 ## Preparación de Datos
 
 En este proyecto se utilizaron tres tipos de datos principales: datos financieros históricos, datos macroeconómicos y análisis de sentimientos extraídos de noticias. A continuación, se detallan los pasos clave de la preparación de datos.
@@ -123,6 +125,7 @@ from yahoo_fin import stock_info as si
 # Extraer datos financieros de las acciones seleccionadas
 tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}```
+
 
 Los datos financieros incluyen precios de cierre ajustados, volúmenes y otros indicadores técnicos.
 
@@ -158,6 +161,7 @@ datos_combinados = pd.merge(precios['AAPL'], sentimientos_df, left_index=True, r
 # Mostrar los primeros registros de los datos combinados
 datos_combinados.head()```
 
+
 ## Modelo de LSTM para la Predicción de Precios
 
 El modelo utilizado en este proyecto es una red neuronal de tipo LSTM (Long Short-Term Memory), ideal para la predicción de series temporales debido a su capacidad de aprender dependencias a largo plazo. A continuación, se describen los detalles de la implementación del modelo.
@@ -181,6 +185,7 @@ class LSTMModel(pl.LightningModule):
         h_lstm, _ = self.lstm(x)
         out = self.fc(h_lstm[:, -1, :])  # Tomamos solo la última salida
         return out```
+
 ## Modelo de LSTM para la Predicción de Precios
 
 El modelo utilizado en este proyecto es una red neuronal de tipo LSTM (Long Short-Term Memory), ideal para la predicción de series temporales debido a su capacidad de aprender dependencias a largo plazo. A continuación, se describen los detalles de la implementación del modelo.
