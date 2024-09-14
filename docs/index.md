@@ -17,7 +17,7 @@ Este proyecto final tiene como objetivo predecir el precio de acciones utilizand
 
 **Enlaces**:  
 - [Repositorio completo en GitHub](https://github.com/tu-usuario/pln-lstm-stock-prediction)  
-- [Notebook en Google Colab](#) (https://colab.research.google.com/drive/1g4bcX1TyKuKAqPLpVMJJGJRbfTjguMuP?usp=sharing)
+- [Notebook en Google Colab](#) [https://colab.research.google.com/drive/1g4bcX1TyKuKAqPLpVMJJGJRbfTjguMuP?usp=sharing](https://colab.research.google.com/drive/1OJGttmpPkHlKNJMb2xc18xAjflgaO7Pb?usp=sharing)
 
 ---
 
@@ -299,7 +299,11 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 | NFLX    | 0.9698     | 0.9596       |
 | GME     | 0.6126     | 0.4947       |
 
+## CONSTRICCION DEL PORTAFOLIO
 
+Finalmente como parte de este proyecto, construimos un portafolio de inversion en base alas predicciones de un mes calculando los rendiemintos diarios y lavolatilidad de cada accion y en base a una optimizacion de pesos con el criterio del ratio de sharpe, la distribucion optima nos queda de la siguiente manera:
+
+![portafolio](portafolio.jpg)
 
 ## Conclusiones
 
