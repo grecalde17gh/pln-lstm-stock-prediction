@@ -38,7 +38,7 @@ Los principales objetivos del proyecto son:
 
 ## Preparación de Datos
 
-### 1. Fuentes de Datos
+### DATSET
 
 Este proyecto utilizó datos financieros históricos de seis acciones principales, así como noticias y comentarios de Reddit para realizar el análisis de sentimientos. A continuación se describen las fuentes de datos utilizadas:
 
@@ -58,7 +58,7 @@ Este proyecto utilizó datos financieros históricos de seis acciones principale
 
 - **Comentarios de Reddit**: Además de las noticias, también se recopilaron comentarios de la red social **Reddit** en subreddits relacionados con el mercado de valores, como **r/stocks** y **r/investing**. Los comentarios de Reddit proporcionaron una perspectiva adicional sobre el sentimiento popular y se analizaron utilizando **VADER** para extraer puntuaciones de sentimiento, que también se integraron en el modelo.
 
-### 2. Extracción de Datos Financieros
+### Extracción de Datos Financieros
 
 Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. :
 
@@ -71,7 +71,7 @@ tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
 ```
 
-### 3. Análisis de Sentimientos
+### Análisis de Sentimientos
 Para incorporar el análisis de sentimientos, se utilizaron noticias financieras recientes, y se analizó el sentimiento utilizando la herramienta VADER. Aquí un ejemplo de una noticia extraída:
 
 Noticia: "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
@@ -144,7 +144,7 @@ Tras el entrenamiento, el modelo logró capturar las tendencias de los precios d
 
 Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras, utilizando la herramienta **VADER** (Valence Aware Dictionary for Sentiment Reasoning). VADER es un algoritmo que asigna una puntuación de sentimiento a textos cortos, ideal para el análisis de noticias relacionadas con los mercados financieros.
 
-### 1. Extracción y Procesamiento de Noticias
+### Extracción y Procesamiento de Noticias
 
 Las noticias se recopilaron de fuentes confiables y se analizaron utilizando VADER. A continuación, se muestra un ejemplo de una noticia relacionada con Apple:
 
@@ -210,12 +210,9 @@ MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones com
 R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
 
 
-![AMZNpnl](AMZNpnl.jpg)
-![NFLXpnl](NFLXpnl.jpg)
-![GOOGLpnl](GOOGLpnl.jpg)
-![NVDApnl](NVDApnl.jpg)
-![AAPLpnl](AAPLpnl.jpg)
-![GMEpnl](GMEpnl.jpg)
+![AMZNpnl](AMZNpnl.jpg) ![NFLXpnl](NFLXpnl.jpg)
+![GOOGLpnl](GOOGLpnl.jpg) ![NVDApnl](NVDApnl.jpg)
+![AAPLpnl](AAPLpnl.jpg) ![GMEpnl](GMEpnl.jpg)
 
 ## Conclusiones
 
