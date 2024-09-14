@@ -58,8 +58,6 @@ Este proyecto utilizó datos financieros históricos de seis acciones principale
 
 - **Comentarios de Reddit**: Además de las noticias, también se recopilaron comentarios de la red social **Reddit** en subreddits relacionados con el mercado de valores, como **r/stocks** y **r/investing**. Los comentarios de Reddit proporcionaron una perspectiva adicional sobre el sentimiento popular y se analizaron utilizando **VADER** para extraer puntuaciones de sentimiento, que también se integraron en el modelo.
 
-
-
 ### 2. Extracción de Datos Financieros
 
 Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. :
@@ -71,8 +69,7 @@ from yahoo_fin import stock_info as si
 # Extraer datos financieros de las acciones seleccionadas
 tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
-
-
+```
 
 ### 4. Análisis de Sentimientos
 Para incorporar el análisis de sentimientos, se utilizaron noticias financieras recientes, y se analizó el sentimiento utilizando la herramienta VADER. Aquí un ejemplo de una noticia extraída:
@@ -83,7 +80,6 @@ El análisis de sentimientos generó el siguiente resultado:
 
 ```python
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
 analyzer = SentimentIntensityAnalyzer()
 noticia = "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
 sentimiento = analyzer.polarity_scores(noticia)
@@ -101,10 +97,6 @@ Resultado:
 El modelo LSTM se implementó utilizando `PyTorch Lightning` para facilitar la gestión del entrenamiento y el seguimiento de las métricas de rendimiento. La red está diseñada para predecir el precio de cierre ajustado de las acciones basadas en datos históricos y análisis de sentimientos.
 
 ```python
-import torch
-import torch.nn as nn
-import pytorch_lightning as pl
-
 class LSTMModel(pl.LightningModule):
     def __init__(self, input_size, hidden_size, output_size, num_layers):
         super(LSTMModel, self).__init__()
@@ -138,10 +130,16 @@ for epoch in range(100):
 ```
 
 3. Resultados Iniciales
-Tras el entrenamiento, el modelo logró capturar las tendencias de los precios de las acciones. A continuación se presenta un gráfico que muestra las predicciones del modelo comparadas con los precios reales de las acciones:
+Tras el entrenamiento, el modelo logró capturar las tendencias de los precios de las acciones bastante bien en la mayoria de acciones analizadas aunque en otras no:
+
+![AMZN](AMZN.jpg)
+![NFLX](NFLX.jpg)
+![GOOGL](GOOGL.jpg)
+![NVDA](NVDA.jpg)
+![MSFT](MSFT.jpg)
+![GME](GME.jpg)
 
 
-El gráfico muestra que el modelo es capaz de seguir las tendencias generales, aunque aún puede mejorarse al incorporar más datos o ajustar los hiperparámetros.
 
 
 ## Incorporación del Análisis de Sentimientos
