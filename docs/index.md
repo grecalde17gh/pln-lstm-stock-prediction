@@ -210,9 +210,15 @@ MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones com
 R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
 
 
-![AMZNpnl](AMZNpnl.jpg) ![NFLXpnl](NFLXpnl.jpg)
-![GOOGLpnl](GOOGLpnl.jpg) ![NVDApnl](NVDApnl.jpg)
-![AAPLpnl](AAPLpnl.jpg) ![GMEpnl](GMEpnl.jpg)
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 30%;">
+  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 30%;">
+  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 30%;">
+  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 30%;">
+  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 30%;">
+  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 30%;">
+</div>
+
 
 ## Conclusiones
 
