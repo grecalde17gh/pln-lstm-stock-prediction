@@ -4,13 +4,6 @@
 
 ---
 
-## Descripción
-
-Este proyecto final tiene como objetivo predecir el precio de acciones utilizando un modelo de red neuronal LSTM (Long Short-Term Memory) entrenado con datos financieros históricos y análisis de sentimientos extraídos de noticias. El proyecto incluye el uso de datos financieros y noticias de Yahoo Finance, reacciones de la red social reddit y análisis de sentimientos utilizando la herramienta VADER.
-
-
----
-
 **Autor**: Gustavo Recalde  
 **Fecha**: Septiembre 2024  
 **Universidad**: Universidad San Fransisco de Quito 
@@ -21,6 +14,12 @@ Este proyecto final tiene como objetivo predecir el precio de acciones utilizand
 
 ---
 
+## Descripción
+
+Este proyecto final tiene como objetivo predecir el precio de acciones utilizando un modelo de red neuronal LSTM (Long Short-Term Memory) entrenado con datos financieros históricos y análisis de sentimientos extraídos de noticias. El proyecto incluye el uso de datos financieros y noticias de Yahoo Finance, reacciones de la red social reddit y análisis de sentimientos utilizando la herramienta VADER.
+
+
+---
 
 ## Introducción
 
