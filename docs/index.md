@@ -304,14 +304,14 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 ## Comparación de Modelos: Métrica R²
 
 
-| Acción  | R²         | R² (con PNL)  |
-|---------|------------|---------------|
-| AAPL    | 0.8614     | 0.8263        |
-| AMZN    | 0.9669     | 0.9576        |
-| GOOGL   | 0.9443     | 0.9217        |
-| MSFT    | 0.4540     | 0.9604        |
-| NFLX    | 0.9698     | 0.9596        |
-| GME     | 0.6126     | 0.4947        |
+| Acción  | R²         | R² (con PNL) |
+|---------|------------|--------------|
+| AAPL    | 0.8614     | 0.8263       |
+| AMZN    | 0.9669     | 0.9576       |
+| GOOGL   | 0.9443     | 0.9217       |
+| MSFT    | 0.4540     | 0.9604       |
+| NFLX    | 0.9698     | 0.9596       |
+| GME     | 0.6126     | 0.4947       |
 
 
 
