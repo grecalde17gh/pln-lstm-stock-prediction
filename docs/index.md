@@ -71,7 +71,7 @@ tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
 
 # Mostrar los primeros registros de los datos de AAPL
-precios['AAPL'].head()```
+precios['AAPL'].head() ```
 
 
 ## Preparación de Datos
