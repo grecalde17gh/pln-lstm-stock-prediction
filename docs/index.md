@@ -46,7 +46,7 @@ Este proyecto utilizó datos financieros históricos de seis acciones principale
   - **AMZN** (Amazon.com Inc.)
   - **GOOGL** (Alphabet Inc.)
   - **NVDA** (NVIDIA Corporation)
-  - **MSFT** (Microsoft Corporation)
+  - **AAPL** (APPLE)
   - **NFLX** (Netflix Inc.)
   - **GME** (GameStop Corp.)
 
@@ -71,7 +71,7 @@ tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
 ```
 
-### 4. Análisis de Sentimientos
+### 3. Análisis de Sentimientos
 Para incorporar el análisis de sentimientos, se utilizaron noticias financieras recientes, y se analizó el sentimiento utilizando la herramienta VADER. Aquí un ejemplo de una noticia extraída:
 
 Noticia: "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
@@ -92,7 +92,7 @@ Resultado:
 
 ## Modelo de LSTM para la Predicción de Precios
 
-### 6. Estructura del Modelo
+### Estructura del Modelo
 
 El modelo LSTM se implementó utilizando `PyTorch Lightning` para facilitar la gestión del entrenamiento y el seguimiento de las métricas de rendimiento. La red está diseñada para predecir el precio de cierre ajustado de las acciones basadas en datos históricos y análisis de sentimientos.
 
@@ -109,7 +109,7 @@ class LSTMModel(pl.LightningModule):
         return out
 ```
 
-2. Entrenamiento del Modelo
+###  Entrenamiento del Modelo
 El entrenamiento se realizó durante 100 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
 
 ```python
@@ -129,17 +129,15 @@ for epoch in range(100):
     optimizer.step()
 ```
 
-3. Resultados Iniciales
+###  Resultados Iniciales
 Tras el entrenamiento, el modelo logró capturar las tendencias de los precios de las acciones bastante bien en la mayoria de acciones analizadas aunque en otras no:
 
 ![AMZN](AMZN.jpg)
 ![NFLX](NFLX.jpg)
 ![GOOGL](GOOGL.jpg)
 ![NVDA](NVDA.jpg)
-![MSFT](MSFT.jpg)
+![AAPL](AAPL.jpg)
 ![GME](GME.jpg)
-
-
 
 
 ## Incorporación del Análisis de Sentimientos
@@ -156,7 +154,6 @@ El análisis de esta noticia con VADER genera las siguientes puntuaciones de sen
 
 ```python
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
 analyzer = SentimentIntensityAnalyzer()
 
 # Analizar el sentimiento de una noticia de ejemplo
@@ -168,16 +165,16 @@ print(sentimiento)
 El resultado del análisis de sentimiento de la noticia es el siguiente:
 {'neg': 0.0, 'neu': 0.669, 'pos': 0.331, 'compound': 0.7269}
 
-2. Incorporación de las Puntuaciones de Sentimiento
+###  Incorporación de las Puntuaciones de Sentimiento
 Una vez obtenido el análisis de sentimientos, las puntuaciones (positiva, negativa, neutral y compuesta) se integran con los datos financieros previamente preparados. Este conjunto de datos combinado sirve como entrada al modelo LSTM.
 
-3. Gráfico de Análisis de Sentimientos
+###  Gráfico de Análisis de Sentimientos
 El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos para las noticias relacionadas con Apple durante un periodo de tiempo. Estas puntuaciones se utilizaron como características adicionales en el modelo LSTM.
 
+![AAPL](AAPLreddit.jpg)
 
-4. Impacto del Análisis de Sentimientos en la Predicción
+###  Impacto del Análisis de Sentimientos en la Predicción
 Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
-
 
 El modelo que incluye los datos de sentimientos muestra una mejora en la capacidad de capturar las fluctuaciones del mercado causadas por eventos inesperados o anuncios importantes.
 
@@ -211,6 +208,14 @@ En términos de **R²**, el **Modelo 3.1** también muestra una mejora, con valo
 
 MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones comparadas con el Modelo 1, lo que demuestra que la incorporación del análisis de sentimientos mejora el rendimiento del modelo.
 R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
+
+
+![AMZNpnl](AMZNpnl.jpg)
+![NFLXpnl](NFLXpnl.jpg)
+![GOOGLpnl](GOOGLpnl.jpg)
+![NVDApnl](NVDApnl.jpg)
+![AAPLpnl](AAPLpnl.jpg)
+![GMEpnl](GMEpnl.jpg)
 
 ## Conclusiones
 
