@@ -303,13 +303,21 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 | GME     | 0.6126     | 0.4947       |
 
 
+## Pruebas adicionales
+Se realizaro algunas pruebas para intentar optimizar el modelo que incluyeron:
+Ajuste del tamaño de las capas ocultas
+Tuning del learning rate
+Incorporar Dropout
+Early Stopping
+Aumento de epocas
+
+sin embargo el desempeño no mejoro en ninguno de lo casos, lo que indica que al complejizarse las red probablemente se genera overfitting y ruido que impide la mejora.
 
 ## CONSTRUCCION DEL PORTAFOLIO
 
 Finalmente como parte de este proyecto, construimos un portafolio de inversion en base a las predicciones de un mes calculando los rendimientos diarios y la volatilidad de cada accion y en base a una optimizacion de pesos con el criterio del ratio de sharpe, la distribucion optima nos queda de la siguiente manera:
 
 ![portafolio](portafolio.jpg)
-
 
 
 ## Conclusiones
