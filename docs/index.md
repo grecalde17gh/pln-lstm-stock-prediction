@@ -132,7 +132,7 @@ Tras el entrenamiento, el modelo logró capturar las tendencias de los precios d
 
 ![AMZN](AMZN.jpg)
 ![NFLX](NFLX.jpg)
-![GOOGL](GOOGL.jpg)
+![googl](googl.jpg)
 ![NVDA](NVDA.jpg)
 ![AAPL](AAPL.jpg)
 ![GME](GME.jpg)
@@ -258,24 +258,24 @@ El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos 
 Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <img src="AMZN.jpg" alt="AMZN" style="width: 45%;">
-  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 45%;">
-  <img src="NFLX.jpg" alt="NFLX" style="width: 45%;">
-  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 45%;">
-  <img src="googl.jpg" alt="GOOGL" style="width: 45%;">
-  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 45%;">
-  <img src="NVDA.jpg" alt="NVDA" style="width: 45%;">
-  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 45%;">
-  <img src="AAPL.jpg" alt="AAPL" style="width: 45%;">
-  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 45%;">
-  <img src="GME.jpg" alt="GME" style="width: 45%;">
-  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 45%;">
+  <img src="AMZN.jpg" alt="AMZN" style="width: 49%;">
+  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 49%;">
+  <img src="NFLX.jpg" alt="NFLX" style="width: 49%;">
+  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 49%;">
+  <img src="googl.jpg" alt="GOOGL" style="width: 49%;">
+  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 49%;">
+  <img src="NVDA.jpg" alt="NVDA" style="width: 49%;">
+  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 49%;">
+  <img src="AAPL.jpg" alt="AAPL" style="width: 49%;">
+  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 49%;">
+  <img src="GME.jpg" alt="GME" style="width: 49%;">
+  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 49%;">
 </div>
 
 
 ## Comparación de Modelos: Métrica MSE
 
-En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 2 (datos financieros + análisis de sentimientos).
+En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para todas las acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 2 (datos financieros + análisis de sentimientos).
 
 | Acción  | MSE (M1)   | MSE (M2)   |
 |---------|------------|------------|
@@ -318,7 +318,7 @@ Para algunas acciones, como NFLX y GOOGL, la diferencia entre los modelos es men
 ## Trabajo Futuro
 
 1. **Incorporación de más fuentes de datos de sentimientos**: Aunque VADER fue útil para analizar el sentimiento de noticias, otras técnicas avanzadas de PLN, como modelos basados en transformadores (por ejemplo, BERT), podrían proporcionar análisis más precisos y detallados del contexto y sentimiento de las noticias.
-2. **Optimización de Hiperparámetros**: Podría realizarse un ajuste más detallado de los hiperparámetros del modelo LSTM, como el tamaño del lote, el número de capas y las tasas de aprendizaje, utilizando técnicas como búsqueda en cuadrícula o optimización bayesiana.
+2. **Optimización de Hiperparámetros**: Podría realizarse un ajuste más detallado de los hiperparámetros del modelo LSTM, como el tamaño del lote, el número de capas y las tasas de aprendizaje, utilizando técnicas como grid search u optimización bayesiana.
 3. **Posibles mejoras**: Dado que el análisis de sentimientos no ha funcionado de manera consistente en todas las acciones, sería útil explorar otras fuentes de datos o enfoques para incorporar el análisis de sentimientos (por ejemplo, usando otro modelo de análisis de sentimientos más avanzado o ajustando el preprocesamiento de los datos de noticias).
 4. **Análisis de Sentimientos en Redes Sociales**: Además de las noticias, incorporar datos de redes sociales como X o plataformas especializadas, que tienen un impacto significativo en los mercados financieros, podría mejorar aún más las predicciones.
    
