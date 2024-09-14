@@ -258,7 +258,8 @@ Fecha: 2024-08-03 13:30:55, Sentimiento: -0.9488, Título: My theory why buffet 
 Fecha: 2024-07-30 14:01:57, Sentimiento: 0.8625, Título: aapl earnings YOLO
 
 ###  Impacto del Análisis de Sentimientos en la Predicción
-Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
+Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. 
+Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <img src="AMZN.jpg" alt="AMZN" style="width: 49%;">
