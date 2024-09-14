@@ -257,11 +257,6 @@ Fecha: 2024-08-03 13:30:55, Sentimiento: -0.9488, Título: My theory why buffet 
 
 Fecha: 2024-07-30 14:01:57, Sentimiento: 0.8625, Título: aapl earnings YOLO
 
-###  Gráfico de Análisis de Sentimientos
-El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos para las noticias relacionadas con Apple durante un periodo de tiempo. Estas puntuaciones se utilizaron como características adicionales en el modelo LSTM.
-
-![AAPL](AAPLreddit.jpg)
-
 ###  Impacto del Análisis de Sentimientos en la Predicción
 Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
 
@@ -307,11 +302,15 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 | NFLX    | 0.9698     | 0.9596       |
 | GME     | 0.6126     | 0.4947       |
 
-## CONSTRICCION DEL PORTAFOLIO
 
-Finalmente como parte de este proyecto, construimos un portafolio de inversion en base alas predicciones de un mes calculando los rendiemintos diarios y lavolatilidad de cada accion y en base a una optimizacion de pesos con el criterio del ratio de sharpe, la distribucion optima nos queda de la siguiente manera:
+
+## CONSTRUCCION DEL PORTAFOLIO
+
+Finalmente como parte de este proyecto, construimos un portafolio de inversion en base a las predicciones de un mes calculando los rendimientos diarios y la volatilidad de cada accion y en base a una optimizacion de pesos con el criterio del ratio de sharpe, la distribucion optima nos queda de la siguiente manera:
 
 ![portafolio](portafolio.jpg)
+
+
 
 ## Conclusiones
 
