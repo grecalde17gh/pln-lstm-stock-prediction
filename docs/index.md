@@ -56,7 +56,7 @@ Este proyecto utilizó datos financieros históricos de seis acciones principale
 
 - **Análisis de Sentimientos de Noticias**: Se recopilaron noticias relacionadas con las empresas mencionadas y se analizaron utilizando **VADER** para generar puntuaciones de sentimiento (positivo, negativo, neutral y compuesto). Estas puntuaciones se integraron con los datos financieros para evaluar su impacto en las predicciones de precios.
 
-- **Comentarios de Reddit**: Además de las noticias, también se recopilaron comentarios de la red social **Reddit** en subreddits relacionados con el mercado de valores, como **r/stocks** y **r/investing**. Los comentarios de Reddit proporcionaron una perspectiva adicional sobre el sentimiento popular y se analizaron utilizando **VADER** para extraer puntuaciones de sentimiento, que también se integraron en el modelo.
+- **Comentarios de Reddit**: Además de las noticias, también se recopilaron comentarios de la red social **Reddit** en subreddits relacionados con el mercado de valores. Los comentarios de Reddit proporcionaron una perspectiva adicional sobre el sentimiento popular y se analizaron utilizando **VADER** para extraer puntuaciones de sentimiento, que también se integraron en el modelo.
 
 ### Extracción de Datos Financieros
 
@@ -140,7 +140,7 @@ Tras el entrenamiento, el modelo logró capturar las tendencias de los precios d
 
 ## Incorporación del Análisis de Sentimientos
 
-Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras y reacciones en reddir, utilizando la herramienta **VADER** (Valence Aware Dictionary for Sentiment Reasoning). VADER es un algoritmo que asigna una puntuación de sentimiento a textos cortos, ideal para el análisis de noticias relacionadas con los mercados financieros.
+Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras y reacciones en reddir, utilizando la herramienta **VADER**.
 
 ### Extracción y Procesamiento de Noticias
 
@@ -298,7 +298,7 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 | AAPL    | 0.8614     | 0.8263       |
 | AMZN    | 0.9669     | 0.9576       |
 | GOOGL   | 0.9443     | 0.9217       |
-| MSFT    | 0.4540     | 0.9604       |
+| NVDA    | 0.4540     | 0.9604       |
 | NFLX    | 0.9698     | 0.9596       |
 | GME     | 0.6126     | 0.4947       |
 
@@ -319,11 +319,11 @@ Este proyecto presentó un enfoque para la predicción del precio de acciones ut
 1. **Modelo 1**: Basado únicamente en datos financieros históricos.
 2. **Modelo 2**: Basado en datos financieros y análisis de sentimientos de noticias.
 
-Impacto mixto del análisis de sentimientos: El Modelo 2 mejoró las predicciones para algunas acciones como NVDA y MSFT, pero empeoró para otras como AMZN, GOOGL, NFLX, y GME. Esto indica que el análisis de sentimientos puede ser beneficioso en ciertos contextos, pero en otros, puede no ser tan relevante o incluso contraproducente.
+Impacto mixto del análisis de sentimientos: El Modelo 2 mejoró las predicciones para algunas acciones como NVDA y AAPL, pero empeoró para otras como AMZN, GOOGL, NFLX, y GME. Esto indica que el análisis de sentimientos puede ser beneficioso en ciertos contextos, pero en otros, puede no ser tan relevante o incluso contraproducente.
 
 En acciones como NVDA, que han mostrado alta volatilidad en el mercado, el Modelo 2 ofrece una mejora significativa en comparación con el Modelo 1, lo que sugiere que el análisis de sentimientos puede ayudar a capturar mejor las fluctuaciones en acciones más volátiles.
 
-Para algunas acciones, como NFLX y GOOGL, la diferencia entre los modelos es menor, lo que sugiere que el análisis de sentimientos no añade mucho valor en estas situaciones, y los datos financieros históricos pueden ser suficientes para realizar predicciones precisas.
+Para algunas acciones, la diferencia entre los modelos es menor, lo que sugiere que el análisis de sentimientos no añade mucho valor en estas situaciones, y los datos financieros históricos pueden ser suficientes para realizar predicciones precisas.
 
 
 ## Trabajo Futuro
