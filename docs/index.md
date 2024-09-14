@@ -17,7 +17,7 @@ Este proyecto final tiene como objetivo predecir el precio de acciones utilizand
 
 **Enlaces**:  
 - [Repositorio completo en GitHub](https://github.com/grecalde17gh/pln-lstm-stock-prediction)
-- [Notebook en Google Colab](https://colab.research.google.com/drive/1g4bcX1TyKuKAqPLpVMJJGJRbfTjguMuP?usp=sharing)
+- [Notebook en Google Colab](https://colab.research.google.com/github/grecalde17gh/pln-lstm-stock-prediction/blob/main/Portafolio_de_inversiones_v6.ipynb)
 
 ---
 
