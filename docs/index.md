@@ -63,12 +63,17 @@ Este proyecto utilizó datos financieros históricos de seis acciones principale
 Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. :
 
 ```python
-import pandas as pd
-from yahoo_fin import stock_info as si
+# Lista de tickers
+tickers = ['AMZN', 'GOOGL', 'NVDA', 'MSFT', 'NFLX']
 
-# Extraer datos financieros de las acciones seleccionadas
-tickers = ['AAPL', 'AMZN', 'GOOGL']
-precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+# Descargar datos de Yahoo Finance para cada ticker
+def download_data(ticker):
+    data = yf.download(ticker, start='2019-06-01', end='2024-07-31')
+    data['MA_10'] = data['Adj Close'].rolling(window=10).mean()
+    data['MA_30'] = data['Adj Close'].rolling(window=30).mean()
+    data['MA_60'] = data['Adj Close'].rolling(window=60).mean()
+    data.dropna(inplace=True)  # Eliminar filas con valores NaN debido al cálculo de medias móviles
+    return data
 ```
 
 ### Análisis de Sentimientos
@@ -98,35 +103,47 @@ El modelo LSTM se implementó utilizando `PyTorch Lightning` para facilitar la g
 
 ```python
 class LSTMModel(pl.LightningModule):
-    def __init__(self, input_size, hidden_size, output_size, num_layers):
+    def __init__(self, input_size=4, hidden_layer_size=100, output_size=1, lr=0.001):
         super(LSTMModel, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, output_size)
-    
+        self.hidden_layer_size = hidden_layer_size
+        self.lstm = nn.LSTM(input_size, hidden_layer_size, batch_first=True)
+        self.linear = nn.Linear(hidden_layer_size, output_size)
+        self.lr = lr
+        self.criterion = nn.MSELoss()
+
     def forward(self, x):
-        h_lstm, _ = self.lstm(x)
-        out = self.fc(h_lstm[:, -1, :])  # Tomamos solo la última salida
-        return out
+        lstm_out, _ = self.lstm(x)
+        predictions = self.linear(lstm_out[:, -1])
+        return predictions
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = self.criterion(y_hat, y)
+        self.log('train_loss_epoch', loss, prog_bar=True, on_epoch=True, on_step=False)
+        return loss
+
+    def configure_optimizers(self):
+        return torch.optim.Adam(self.parameters(), lr=self.lr)
 ```
 
 ###  Entrenamiento del Modelo
-El entrenamiento se realizó durante 100 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
+El entrenamiento se realizó durante 20 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
 
 ```python
-from torch.optim import Adam
+        # Entrenamiento del modelo
+        model = LSTMModel()
+        loss_logger = LossLogger()
+        trainer = pl.Trainer(max_epochs=20, logger=False, callbacks=[loss_logger])
+        trainer.fit(model, train_loader)
 
-# Definir el optimizador y la función de pérdida
-optimizer = Adam(model.parameters(), lr=0.001)
-loss_fn = nn.MSELoss()
+        # Guardar el modelo
+        torch.save(model.state_dict(), model_path)
+        print(f"Modelo guardado para {ticker}.")
 
-# Entrenamiento simplificado del modelo
-for epoch in range(100):
-    model.train()
-    optimizer.zero_grad()
-    output = model(x_train)
-    loss = loss_fn(output, y_train)
-    loss.backward()
-    optimizer.step()
+        # Graficar la pérdida durante el entrenamiento
+        plot_loss(loss_logger, ticker)
+        final_loss = loss_logger.losses[-1][1] if hasattr(loss_logger, 'losses') else None
 ```
 
 ###  Resultados Iniciales
@@ -142,31 +159,109 @@ Tras el entrenamiento, el modelo logró capturar las tendencias de los precios d
 
 ## Incorporación del Análisis de Sentimientos
 
-Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras, utilizando la herramienta **VADER** (Valence Aware Dictionary for Sentiment Reasoning). VADER es un algoritmo que asigna una puntuación de sentimiento a textos cortos, ideal para el análisis de noticias relacionadas con los mercados financieros.
+Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras y reacciones en reddir, utilizando la herramienta **VADER** (Valence Aware Dictionary for Sentiment Reasoning). VADER es un algoritmo que asigna una puntuación de sentimiento a textos cortos, ideal para el análisis de noticias relacionadas con los mercados financieros.
 
 ### Extracción y Procesamiento de Noticias
 
-Las noticias se recopilaron de fuentes confiables y se analizaron utilizando VADER. A continuación, se muestra un ejemplo de una noticia relacionada con Apple:
+Las pruebas inciales se realizaron con el ticker de APLE:
+```python
+def obtener_noticias_yfinance(ticker):
+    stock = yf.Ticker(ticker)
+    noticias = stock.news
+    return noticias
+```
+Fecha: 1726263919
+Fuente: Zacks
+Titulo: Apple (AAPL) Stock Drops Despite Market Gains: Important Facts to Note
+Enlace: https://finance.yahoo.com/news/apple-aapl-stock-drops-despite-214519779.html
 
-**Noticia**: *"Apple reports record profits for the latest quarter, driven by strong demand for iPhones and services."*
+Fecha: 1726257850
+Fuente: Investor's Business Daily
+Titulo: Apple Begins Taking Preorders For AI-Enabled iPhone 16 Handsets
+Enlace: https://finance.yahoo.com/m/b92b0d3f-72c2-35ce-ad46-c9a1915b22cf/apple-begins-taking-preorders.html
 
-El análisis de esta noticia con VADER genera las siguientes puntuaciones de sentimiento:
+Fecha: 1726249762
+Fuente: MT Newswires
+Titulo: Apple Seeks Dismissal of Lawsuit Against Israeli Cyber Intelligence Firm NSO Group
+Enlace: https://finance.yahoo.com/news/apple-seeks-dismissal-lawsuit-against-174922373.html
+
+Fecha: 1726248205
+Fuente: Investopedia
+Titulo: FDA Approves OTC Hearing Aid Software Device for Apple AirPods Pro
+Enlace: https://finance.yahoo.com/m/501763bd-b8a2-353f-b37c-be2380783f4a/fda-approves-otc-hearing-aid.html
+
+Fecha: 1726246621
+Fuente: TechCrunch
+Titulo: Alternative app stores will be allowed on Apple iPad in the EU from September 16
+Enlace: https://finance.yahoo.com/m/549ea22f-7f66-3ccb-9a29-cd6c091ea746/alternative-app-stores-will.html
 
 ```python
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-analyzer = SentimentIntensityAnalyzer()
+# Obtener publicaciones de reddit
+import nest_asyncio
+import asyncio
+import asyncpraw
 
-# Analizar el sentimiento de una noticia de ejemplo
-noticia = "Apple reports record profits for the latest quarter, driven by strong demand for iPhones and services."
-sentimiento = analyzer.polarity_scores(noticia)
-print(sentimiento)
+nest_asyncio.apply()
+
+async def obtener_reddit_async(ticker, cliente_id, cliente_secret, usuario, contraseña, user_agent, subreddit='WallStreetBets', limite=100):
+    reddit = asyncpraw.Reddit(client_id=cliente_id,
+                              client_secret=cliente_secret,
+                              user_agent=user_agent,
+                              username=usuario,
+                              password=contraseña)
+
+    subreddit = await reddit.subreddit(subreddit)
+    publicaciones = subreddit.search(ticker, limit=limite)
+    datos = []
+    async for post in publicaciones:
+        datos.append({
+            'titulo': post.title,
+            'cuerpo': post.selftext,
+            'fecha': post.created_utc
+        })
+    return datos
+
+# Ejecutar la función asíncrona
+cliente_id = "xxx"
+cliente_secret = "xxx"
+usuario = "xxx"
+contraseña = "xxx"
+user_agent = "xxx"
+
+# Ejecutar la función para obtener los posts de Reddit de AAPL
+reddit_posts = asyncio.run(obtener_reddit_async(ticker, cliente_id, cliente_secret, usuario, contraseña, user_agent))
+
+# Mostrar un resumen de los primeros posts obtenidos
+for post in reddit_posts[:5]:
+    print(f"Fecha: {post['fecha']}")
+    print(f"Título: {post['titulo']}")
+    print(f"Cuerpo: {post['cuerpo']}\n")
 ```
+Fecha: 1724950083.0
+Título: AAPL; please stay up this time to keep over 7 figures
+Cuerpo: 
 
-El resultado del análisis de sentimiento de la noticia es el siguiente:
-{'neg': 0.0, 'neu': 0.669, 'pos': 0.331, 'compound': 0.7269}
+Fecha: 1722691855.0
+Título: My theory why buffet sold aapl
+Cuerpo: Everyone is freaking out about recession and also citing buffet selling half his stake in aapl as proof. But the reality is buffet doesn't time the market he holds good companies through recessions. But if you look at a lot of his other moves, sold all his TSM and a large portion of BYD as well. Its clear that buffet has geopolitical risks on the top of his mind, aapl would be obliterated in the case of a taiwan war. 
+
+Afterall, why wouldn't he sell his American express position in a material way, wouldn't they get hit hard in a recession as well with delinquencies and decreased consumer spending? 
+
+I guess this post doesn't really offer much reassurance as a taiwan war would be worse than a recession. But honestly I think you should trade like it wouldn't happen because if it does it would probably devolve into nuclear war and currency would be irrelevant at that point. Just my 2 cents.
+
+Fecha: 1722348117.0
+Título: aapl earnings YOLO
+Cuerpo: I am a regard but maybe we’ll be lucky also I have no reasoning just hoping for good earnings 
 
 ###  Incorporación de las Puntuaciones de Sentimiento
 Una vez obtenido el análisis de sentimientos, las puntuaciones (positiva, negativa, neutral y compuesta) se integran con los datos financieros previamente preparados. Este conjunto de datos combinado sirve como entrada al modelo LSTM.
+
+Fecha: 2024-09-13 21:45:19, Sentimiento: -0.6671, Titulo: Apple (AAPL) Stock Drops Despite Market Gains: Important Facts to Note
+Fecha: 2024-09-13 20:04:10, Sentimiento: 0.0, Titulo: Apple Begins Taking Preorders For AI-Enabled iPhone 16 Handsets
+Fecha: 2024-09-13 17:49:22, Sentimiento: 0.296, Titulo: Apple Seeks Dismissal of Lawsuit Against Israeli Cyber Intelligence Firm NSO Group
+Fecha: 2024-08-29 16:48:03, Sentimiento: 0.3182, Título: AAPL; please stay up this time to keep over 7 figures
+Fecha: 2024-08-03 13:30:55, Sentimiento: -0.9488, Título: My theory why buffet sold aapl
+Fecha: 2024-07-30 14:01:57, Sentimiento: 0.8625, Título: aapl earnings YOLO
 
 ###  Gráfico de Análisis de Sentimientos
 El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos para las noticias relacionadas con Apple durante un periodo de tiempo. Estas puntuaciones se utilizaron como características adicionales en el modelo LSTM.
@@ -176,19 +271,34 @@ El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos 
 ###  Impacto del Análisis de Sentimientos en la Predicción
 Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
 
-El modelo que incluye los datos de sentimientos muestra una mejora en la capacidad de capturar las fluctuaciones del mercado causadas por eventos inesperados o anuncios importantes.
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <img src="AMZN.jpg" alt="AMZN" style="width: 40%;">
+  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 40%;">
+  <img src="NFLX.jpg" alt="NFLX" style="width: 40%;">
+  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 40%;">
+  <img src="googl.jpg" alt="GOOGL" style="width: 40%;">
+  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 40%;">
+  <img src="NVDA.jpg" alt="NVDA" style="width: 40%;">
+  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 40%;">
+  <img src="AAPL.jpg" alt="AAPL" style="width: 40%;">
+  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 40%;">
+  <img src="GME.jpg" alt="GME" style="width: 40%;">
+  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 40%;">
+</div>
+
 
 ## Comparación de Modelos: Métrica MSE
 
 En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 3.1 (datos financieros + análisis de sentimientos).
 
-| Acción  | MSE (Modelo 1) | MSE (Modelo 3.1) |
-|---------|----------------|------------------|
-| AAPL    | 0.0056         | 0.0043           |
-| AMZN    | 0.0049         | 0.0037           |
-| GOOGL   | 0.0061         | 0.0048           |
-| MSFT    | 0.0052         | 0.0039           |
-| TSLA    | 0.0070         | 0.0054           |
+| Acción  | MSE       | MSE (con PNL) |
+|---------|-----------|---------------|
+| AAPL    | 38.080    | 23.505        |
+| AMZN    | 14.764    | 17.555        |
+| GOOGL   | 18.694    | 20.392        |
+| NVDA    | 455.809   | 26.863        |
+| NFLX    | 267.251   | 340.965       |
+| GME     | 14.362    | 16.942        |
 
 El **Modelo 3.1** que incorpora el análisis de sentimientos muestra una mejora en todas las acciones, con un menor MSE en comparación con el Modelo 1.
 
@@ -196,13 +306,14 @@ El **Modelo 3.1** que incorpora el análisis de sentimientos muestra una mejora 
 
 A continuación, se presenta una tabla que compara el **R² (Coeficiente de Determinación)** para las cinco acciones entre el Modelo 1 y el Modelo 3.1.
 
-| Acción  | R² (Modelo 1) | R² (Modelo 3.1)  |
-|---------|---------------|------------------|
-| AAPL    | 0.85          | 0.91             |
-| AMZN    | 0.82          | 0.88             |
-| GOOGL   | 0.80          | 0.87             |
-| MSFT    | 0.84          | 0.90             |
-| TSLA    | 0.78          | 0.85             |
+| Acción  | R²         | R² (con PNL)  |
+|---------|------------|---------------|
+| AAPL    | 0.8614     | 0.8263        |
+| AMZN    | 0.9669     | 0.9576        |
+| GOOGL   | 0.9443     | 0.9217        |
+| MSFT    | 0.4540     | 0.9604        |
+| NFLX    | 0.9698     | 0.9596        |
+| GME     | 0.6126     | 0.4947        |
 
 En términos de **R²**, el **Modelo 3.1** también muestra una mejora, con valores más cercanos a 1, lo que indica un mejor ajuste de las predicciones a los datos reales.
 
@@ -210,20 +321,6 @@ MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones com
 R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
 
 
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <img src="AMZN.jpg" alt="AMZN" style="width: 50%;">
-  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 50%;">
-  <img src="NFLX.jpg" alt="NFLX" style="width: 50%;">
-  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 50%;">
-  <img src="GOOGLl.jpg" alt="GOOGL" style="width: 50%;">
-  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 50%;">
-  <img src="NVDA.jpg" alt="NVDA" style="width: 50%;">
-  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 50%;">
-  <img src="AAPL.jpg" alt="AAPL" style="width: 50%;">
-  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 50%;">
-  <img src="GME.jpg" alt="GME" style="width: 50%;">
-  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 50%;">
-</div>
 
 
 ## Conclusiones
