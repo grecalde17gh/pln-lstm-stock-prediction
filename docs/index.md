@@ -44,3 +44,116 @@ Los siguientes datos se emplean en este estudio:
 
 ![Datos de Acciones](ruta/a/imagen_datos_acciones.png)
 
+## Preparación de Datos
+
+El éxito de un modelo de predicción depende en gran medida de la calidad de los datos utilizados. En este proyecto, se recopilan datos financieros históricos y noticias de varias fuentes. A continuación, se describen las etapas de preparación de los datos.
+
+### 1. Fuentes de Datos
+
+- **Yahoo Finance**: Se utilizaron los precios históricos ajustados de las acciones de las empresas seleccionadas, así como otros indicadores técnicos relevantes como el volumen de transacciones.
+- **FRED (Federal Reserve Economic Data)**: Se obtuvieron datos macroeconómicos que incluyen tasas de interés, inflación, entre otros, para entender el contexto general del mercado.
+- **Noticias y Análisis de Sentimientos**: Las noticias relacionadas con las empresas seleccionadas fueron obtenidas y procesadas mediante la herramienta VADER para realizar un análisis de sentimientos. Este análisis se utilizó como una variable adicional en el modelo para evaluar su impacto en los precios de las acciones.
+
+![Fuentes de Datos](ruta/a/imagen_fuentes_datos.png)
+
+### 2. Extracción de Datos Financieros
+
+Se utilizó la biblioteca `yahoo_fin` para extraer los datos financieros de las acciones seleccionadas (AMZN, AAPL, GOOGL). A continuación, se muestra un fragmento del código utilizado para la descarga de datos:
+
+```python
+import pandas as pd
+from yahoo_fin import stock_info as si
+
+# Definir los tickers de las acciones a analizar
+tickers = ['AAPL', 'AMZN', 'GOOGL']
+
+# Descargar los datos financieros históricos para cada ticker
+precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+
+# Mostrar los primeros registros de los datos de AAPL
+precios['AAPL'].head()
+
+## Preparación de Datos
+
+El éxito de un modelo de predicción depende en gran medida de la calidad de los datos utilizados. En este proyecto, se recopilan datos financieros históricos y noticias de varias fuentes. A continuación, se describen las etapas de preparación de los datos.
+
+### 1. Fuentes de Datos
+
+- **Yahoo Finance**: Se utilizaron los precios históricos ajustados de las acciones de las empresas seleccionadas, así como otros indicadores técnicos relevantes como el volumen de transacciones.
+- **FRED (Federal Reserve Economic Data)**: Se obtuvieron datos macroeconómicos que incluyen tasas de interés, inflación, entre otros, para entender el contexto general del mercado.
+- **Noticias y Análisis de Sentimientos**: Las noticias relacionadas con las empresas seleccionadas fueron obtenidas y procesadas mediante la herramienta VADER para realizar un análisis de sentimientos. Este análisis se utilizó como una variable adicional en el modelo para evaluar su impacto en los precios de las acciones.
+
+![Fuentes de Datos](ruta/a/imagen_fuentes_datos.png)
+
+### 2. Extracción de Datos Financieros
+
+Se utilizó la biblioteca `yahoo_fin` para extraer los datos financieros de las acciones seleccionadas (AMZN, AAPL, GOOGL). A continuación, se muestra un fragmento del código utilizado para la descarga de datos:
+
+```python
+import pandas as pd
+from yahoo_fin import stock_info as si
+
+# Definir los tickers de las acciones a analizar
+tickers = ['AAPL', 'AMZN', 'GOOGL']
+
+# Descargar los datos financieros históricos para cada ticker
+precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+
+# Mostrar los primeros registros de los datos de AAPL
+precios['AAPL'].head()
+
+## Preparación de Datos
+
+En este proyecto se utilizaron tres tipos de datos principales: datos financieros históricos, datos macroeconómicos y análisis de sentimientos extraídos de noticias. A continuación, se detallan los pasos clave de la preparación de datos.
+
+### 1. Fuentes de Datos
+
+- **Yahoo Finance**: Precios históricos ajustados y volumen de transacciones de las acciones de AMZN, AAPL y GOOGL.
+- **FRED**: Datos macroeconómicos relevantes como las tasas de interés.
+- **Análisis de Sentimientos de Noticias**: Se utilizó VADER para analizar noticias relacionadas con las empresas, obteniendo una puntuación de sentimiento para cada noticia.
+
+### 2. Extracción de Datos Financieros
+
+Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. A continuación, se muestra un ejemplo del código utilizado para obtener los datos:
+
+```python
+import pandas as pd
+from yahoo_fin import stock_info as si
+
+# Extraer datos financieros de las acciones seleccionadas
+tickers = ['AAPL', 'AMZN', 'GOOGL']
+precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+
+Los datos financieros incluyen precios de cierre ajustados, volúmenes y otros indicadores técnicos.
+
+### 3. Análisis Exploratorio de Datos (EDA)
+Se realizó un análisis exploratorio de los datos financieros. A continuación, se presenta un gráfico de los precios ajustados de las acciones a lo largo del tiempo:
+
+
+### 4. Análisis de Sentimientos
+Para incorporar el análisis de sentimientos, se utilizaron noticias financieras recientes, y se analizó el sentimiento utilizando la herramienta VADER. Aquí un ejemplo de una noticia extraída:
+
+Noticia: "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
+
+El análisis de sentimientos generó el siguiente resultado:
+
+```python
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+analyzer = SentimentIntensityAnalyzer()
+noticia = "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
+sentimiento = analyzer.polarity_scores(noticia)
+print(sentimiento)
+
+Resultado:
+{'neg': 0.0, 'neu': 0.461, 'pos': 0.539, 'compound': 0.7269}
+
+### 5. Integración de Datos
+Finalmente, los datos financieros y los datos de sentimientos se integraron en un solo conjunto de datos, que se utilizó para entrenar el modelo LSTM:
+
+```python
+# Unir los datos financieros y los de sentimiento
+datos_combinados = pd.merge(precios['AAPL'], sentimientos_df, left_index=True, right_index=True)
+
+# Mostrar los primeros registros de los datos combinados
+datos_combinados.head()
