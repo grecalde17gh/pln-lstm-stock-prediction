@@ -211,18 +211,18 @@ R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que e
 
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <img src="AMZN.jpg" alt="AMZN" style="width: 30%;">
-  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 30%;">
-  <img src="NFLX.jpg" alt="NFLX" style="width: 30%;">
-  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 30%;">
-  <img src="GOOGLl.jpg" alt="GOOGL" style="width: 30%;">
-  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 30%;">
-  <img src="NVDA.jpg" alt="NVDA" style="width: 30%;">
-  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 30%;">
-  <img src="AAPL.jpg" alt="AAPL" style="width: 30%;">
-  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 30%;">
-  <img src="GME.jpg" alt="GME" style="width: 30%;">
-  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 30%;">
+  <img src="AMZN.jpg" alt="AMZN" style="width: 50%;">
+  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 50%;">
+  <img src="NFLX.jpg" alt="NFLX" style="width: 50%;">
+  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 50%;">
+  <img src="GOOGLl.jpg" alt="GOOGL" style="width: 50%;">
+  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 50%;">
+  <img src="NVDA.jpg" alt="NVDA" style="width: 50%;">
+  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 50%;">
+  <img src="AAPL.jpg" alt="AAPL" style="width: 50%;">
+  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 50%;">
+  <img src="GME.jpg" alt="GME" style="width: 50%;">
+  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 50%;">
 </div>
 
 
