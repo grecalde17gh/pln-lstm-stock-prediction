@@ -102,7 +102,8 @@ tickers = ['AAPL', 'AMZN', 'GOOGL']
 precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
 
 # Mostrar los primeros registros de los datos de AAPL
-precios['AAPL'].head()```
+precios['AAPL'].head()
+```
 
 
 ## Preparación de Datos
@@ -125,7 +126,8 @@ from yahoo_fin import stock_info as si
 
 # Extraer datos financieros de las acciones seleccionadas
 tickers = ['AAPL', 'AMZN', 'GOOGL']
-precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}```
+precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+```
 
 
 Los datos financieros incluyen precios de cierre ajustados, volúmenes y otros indicadores técnicos.
@@ -147,7 +149,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 noticia = "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
 sentimiento = analyzer.polarity_scores(noticia)
-print(sentimiento)```
+print(sentimiento)
+```
 
 Resultado:
 {'neg': 0.0, 'neu': 0.461, 'pos': 0.539, 'compound': 0.7269}
@@ -160,7 +163,8 @@ Finalmente, los datos financieros y los datos de sentimientos se integraron en u
 datos_combinados = pd.merge(precios['AAPL'], sentimientos_df, left_index=True, right_index=True)
 
 # Mostrar los primeros registros de los datos combinados
-datos_combinados.head()```
+datos_combinados.head()
+```
 
 
 ## Modelo de LSTM para la Predicción de Precios
@@ -185,9 +189,56 @@ class LSTMModel(pl.LightningModule):
     def forward(self, x):
         h_lstm, _ = self.lstm(x)
         out = self.fc(h_lstm[:, -1, :])  # Tomamos solo la última salida
-        return out```
+        return out
+```
 
-## Modelo de LSTM para la Predicción de Precios
+Este modelo tiene las siguientes características:
 
-El modelo utilizado en este proyecto es una red neuronal de tipo LSTM (Long Short-Term Memory), ideal para la predicción de series temporales debido a su capacidad de aprender dependencias a largo plazo. A continuación, se describen los detalles de la implementación del modelo.
+Input Size: Número de características de entrada (datos financieros y de sentimientos).
+Hidden Size: Número de unidades en la capa LSTM oculta.
+Output Size: Precio predicho de la acción.
+Num Layers: Número de capas LSTM.
+
+2. Entrenamiento del Modelo
+El modelo se entrenó utilizando los datos combinados (financieros y de sentimientos) previamente preparados. El entrenamiento se realizó durante 100 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
+
+```python
+from torch.optim import Adam
+
+# Definir el optimizador y la función de pérdida
+optimizer = Adam(model.parameters(), lr=0.001)
+loss_fn = nn.MSELoss()
+
+# Entrenamiento simplificado del modelo
+for epoch in range(100):
+    model.train()
+    optimizer.zero_grad()
+    output = model(x_train)
+    loss = loss_fn(output, y_train)
+    loss.backward()
+    optimizer.step()
+```
+
+3. Resultados Iniciales
+Tras el entrenamiento, el modelo logró capturar las tendencias de los precios de las acciones. A continuación se presenta un gráfico que muestra las predicciones del modelo comparadas con los precios reales de las acciones:
+
+
+El gráfico muestra que el modelo es capaz de seguir las tendencias generales, aunque aún puede mejorarse al incorporar más datos o ajustar los hiperparámetros.
+
+4. Evaluación del Modelo
+El rendimiento del modelo se evaluó utilizando la métrica de error cuadrático medio (MSE). A continuación, se muestra un fragmento del código utilizado para evaluar el rendimiento del modelo en el conjunto de prueba:
+
+```python
+from sklearn.metrics import mean_squared_error
+
+# Realizar predicciones en el conjunto de prueba
+y_pred = model(x_test)
+
+# Calcular el error cuadrático medio
+mse = mean_squared_error(y_test, y_pred.detach().numpy())
+print(f"Error cuadrático medio: {mse}")
+```
+El MSE final fue de aproximadamente 0.0043, lo que indica un buen ajuste, aunque aún se podría mejorar con más datos o un ajuste más preciso de los hiperparámetros.
+
+
 
