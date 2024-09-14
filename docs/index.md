@@ -21,7 +21,7 @@ Este proyecto final tiene como objetivo predecir el precio de acciones utilizand
 
 ---
 
-![Predicción del Precio de Acciones](ruta/a/grafico_prediccion.png)
+![Predicción del Precio de Acciones](datosacciones.jpg)
 
 ## Introducción
 
