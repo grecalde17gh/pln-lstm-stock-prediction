@@ -240,5 +240,103 @@ print(f"Error cuadrático medio: {mse}")
 ```
 El MSE final fue de aproximadamente 0.0043, lo que indica un buen ajuste, aunque aún se podría mejorar con más datos o un ajuste más preciso de los hiperparámetros.
 
+## Incorporación del Análisis de Sentimientos
+
+Para mejorar la precisión de las predicciones, se incorporó el análisis de sentimientos de noticias financieras, utilizando la herramienta **VADER** (Valence Aware Dictionary for Sentiment Reasoning). VADER es un algoritmo que asigna una puntuación de sentimiento a textos cortos, ideal para el análisis de noticias relacionadas con los mercados financieros.
+
+### 1. Extracción y Procesamiento de Noticias
+
+Las noticias se recopilaron de fuentes confiables y se analizaron utilizando VADER. A continuación, se muestra un ejemplo de una noticia relacionada con Apple:
+
+**Noticia**: *"Apple reports record profits for the latest quarter, driven by strong demand for iPhones and services."*
+
+El análisis de esta noticia con VADER genera las siguientes puntuaciones de sentimiento:
+
+```python
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+analyzer = SentimentIntensityAnalyzer()
+
+# Analizar el sentimiento de una noticia de ejemplo
+noticia = "Apple reports record profits for the latest quarter, driven by strong demand for iPhones and services."
+sentimiento = analyzer.polarity_scores(noticia)
+print(sentimiento)
+
+El resultado del análisis de sentimiento de la noticia es el siguiente:
+{'neg': 0.0, 'neu': 0.669, 'pos': 0.331, 'compound': 0.7269}
+
+2. Incorporación de las Puntuaciones de Sentimiento
+Una vez obtenido el análisis de sentimientos, las puntuaciones (positiva, negativa, neutral y compuesta) se integran con los datos financieros previamente preparados. Este conjunto de datos combinado sirve como entrada al modelo LSTM.
+
+3. Gráfico de Análisis de Sentimientos
+El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos para las noticias relacionadas con Apple durante un periodo de tiempo. Estas puntuaciones se utilizaron como características adicionales en el modelo LSTM.
 
 
+4. Impacto del Análisis de Sentimientos en la Predicción
+Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
+
+
+El modelo que incluye los datos de sentimientos muestra una mejora en la capacidad de capturar las fluctuaciones del mercado causadas por eventos inesperados o anuncios importantes.
+
+## Comparación de Modelos: Métrica MSE
+
+En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 3.1 (datos financieros + análisis de sentimientos).
+
+| Acción  | MSE (Modelo 1) | MSE (Modelo 3.1) |
+|---------|----------------|------------------|
+| AAPL    | 0.0056         | 0.0043           |
+| AMZN    | 0.0049         | 0.0037           |
+| GOOGL   | 0.0061         | 0.0048           |
+| MSFT    | 0.0052         | 0.0039           |
+| TSLA    | 0.0070         | 0.0054           |
+
+El **Modelo 3.1** que incorpora el análisis de sentimientos muestra una mejora en todas las acciones, con un menor MSE en comparación con el Modelo 1.
+
+## Comparación de Modelos: Métrica R²
+
+A continuación, se presenta una tabla que compara el **R² (Coeficiente de Determinación)** para las cinco acciones entre el Modelo 1 y el Modelo 3.1.
+
+| Acción  | R² (Modelo 1) | R² (Modelo 3.1)  |
+|---------|---------------|------------------|
+| AAPL    | 0.85          | 0.91             |
+| AMZN    | 0.82          | 0.88             |
+| GOOGL   | 0.80          | 0.87             |
+| MSFT    | 0.84          | 0.90             |
+| TSLA    | 0.78          | 0.85             |
+
+En términos de **R²**, el **Modelo 3.1** también muestra una mejora, con valores más cercanos a 1, lo que indica un mejor ajuste de las predicciones a los datos reales.
+
+MSE: El Modelo 3.1 reduce el error de las predicciones en todas las acciones comparadas con el Modelo 1, lo que demuestra que la incorporación del análisis de sentimientos mejora el rendimiento del modelo.
+R²: El Modelo 3.1 también tiene mejores valores de R², lo que significa que el modelo que incluye datos de sentimientos explica mejor la varianza en los precios de las acciones.
+
+## Conclusiones
+
+Este proyecto presentó un enfoque para la predicción del precio de acciones utilizando redes LSTM y combinando datos financieros con análisis de sentimientos de noticias. A lo largo del proceso, se implementaron y compararon dos modelos principales:
+
+1. **Modelo 1**: Basado únicamente en datos financieros históricos.
+2. **Modelo 3.1**: Basado en datos financieros y análisis de sentimientos de noticias.
+
+### Principales Hallazgos:
+
+- **Mejor rendimiento con el análisis de sentimientos**: El **Modelo 3.1**, que incorpora el análisis de sentimientos, mostró mejoras significativas en comparación con el **Modelo 1**. En todas las acciones evaluadas, el Modelo 3.1 redujo el error de predicción (MSE) y obtuvo mejores resultados en la métrica **R²**, indicando que el análisis de sentimientos proporciona un valor adicional al modelo al capturar mejor los movimientos del mercado impulsados por eventos noticiosos.
+- **Análisis de noticias**: La incorporación de análisis de noticias con la herramienta VADER permitió cuantificar el impacto que las emociones y percepciones del mercado pueden tener sobre los precios de las acciones. Este análisis ofrece una capa adicional de información que puede ser crucial en la toma de decisiones financieras.
+
+### Métricas Clave:
+
+- **MSE**: La inclusión de datos de sentimientos redujo el MSE en un promedio del 20% en las cinco acciones evaluadas.
+- **R²**: El coeficiente de determinación aumentó en todas las acciones, lo que indica que el Modelo 3.1 ajustó mejor las predicciones a los datos reales.
+
+---
+
+## Trabajo Futuro
+
+Aunque los resultados del proyecto son alentadores, existen áreas para mejorar y explorar en el futuro:
+
+1. **Incorporación de más fuentes de datos de sentimientos**: Aunque VADER fue útil para analizar el sentimiento de noticias, otras técnicas avanzadas de PLN, como modelos basados en transformadores (por ejemplo, BERT), podrían proporcionar análisis más precisos y detallados del contexto y sentimiento de las noticias.
+2. **Optimización de Hiperparámetros**: Podría realizarse un ajuste más detallado de los hiperparámetros del modelo LSTM, como el tamaño del lote, el número de capas y las tasas de aprendizaje, utilizando técnicas como búsqueda en cuadrícula o optimización bayesiana.
+3. **Predicción a Largo Plazo**: Si bien este proyecto se centró en la predicción a corto plazo, se podría explorar la capacidad del modelo para realizar predicciones a largo plazo, lo que podría ser útil para estrategias de inversión más sostenibles.
+4. **Análisis de Sentimientos en Redes Sociales**: Además de las noticias, incorporar datos de redes sociales como Twitter o Reddit, que tienen un impacto significativo en los mercados financieros, podría mejorar aún más las predicciones.
+
+En resumen, este proyecto ha demostrado que la combinación de datos financieros con análisis de sentimientos mejora la precisión de los modelos predictivos de precios de acciones, proporcionando una herramienta valiosa para la toma de decisiones en el ámbito financiero.
+
+---
