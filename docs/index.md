@@ -122,7 +122,7 @@ from yahoo_fin import stock_info as si
 
 # Extraer datos financieros de las acciones seleccionadas
 tickers = ['AAPL', 'AMZN', 'GOOGL']
-precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}
+precios = {ticker: si.get_data(ticker, start_date="2020-01-01", end_date="2023-01-01") for ticker in tickers}'''
 
 Los datos financieros incluyen precios de cierre ajustados, volúmenes y otros indicadores técnicos.
 
@@ -143,7 +143,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 noticia = "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
 sentimiento = analyzer.polarity_scores(noticia)
-print(sentimiento)
+print(sentimiento)'''
 
 Resultado:
 {'neg': 0.0, 'neu': 0.461, 'pos': 0.539, 'compound': 0.7269}
@@ -156,4 +156,28 @@ Finalmente, los datos financieros y los datos de sentimientos se integraron en u
 datos_combinados = pd.merge(precios['AAPL'], sentimientos_df, left_index=True, right_index=True)
 
 # Mostrar los primeros registros de los datos combinados
-datos_combinados.head()
+datos_combinados.head()''
+
+## Modelo de LSTM para la Predicción de Precios
+
+El modelo utilizado en este proyecto es una red neuronal de tipo LSTM (Long Short-Term Memory), ideal para la predicción de series temporales debido a su capacidad de aprender dependencias a largo plazo. A continuación, se describen los detalles de la implementación del modelo.
+
+### 1. Estructura del Modelo
+
+El modelo LSTM se implementó utilizando `PyTorch Lightning` para facilitar la gestión del entrenamiento y el seguimiento de las métricas de rendimiento. La red está diseñada para predecir el precio de cierre ajustado de las acciones basadas en datos históricos y análisis de sentimientos.
+
+```python
+import torch
+import torch.nn as nn
+import pytorch_lightning as pl
+
+class LSTMModel(pl.LightningModule):
+    def __init__(self, input_size, hidden_size, output_size, num_layers):
+        super(LSTMModel, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+    
+    def forward(self, x):
+        h_lstm, _ = self.lstm(x)
+        out = self.fc(h_lstm[:, -1, :])  # Tomamos solo la última salida
+        return out'''
