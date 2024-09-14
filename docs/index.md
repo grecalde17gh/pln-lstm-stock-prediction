@@ -6,7 +6,8 @@
 
 ## Descripción
 
-Este proyecto final tiene como objetivo predecir el precio de acciones utilizando un modelo de red neuronal LSTM (Long Short-Term Memory) entrenado con datos financieros históricos, noticias y análisis de sentimientos. El proyecto incluye el uso de datos extraídos de fuentes como Yahoo Finance, FRED, y análisis de sentimientos con la herramienta VADER.
+Este proyecto final tiene como objetivo predecir el precio de acciones utilizando un modelo de red neuronal LSTM (Long Short-Term Memory) entrenado con datos financieros históricos y análisis de sentimientos extraídos de noticias. El proyecto incluye el uso de datos financieros y noticias de Yahoo Finance, reacciones de la red social reddit y análisis de sentimientos utilizando la herramienta VADER.
+
 
 ---
 
@@ -26,7 +27,7 @@ Este proyecto final tiene como objetivo predecir el precio de acciones utilizand
 
 La predicción de precios de acciones es un desafío clave en las finanzas debido a la naturaleza compleja y volátil de los mercados. En este proyecto, se utiliza una combinación de datos financieros históricos y el análisis de sentimientos basado en noticias para mejorar la precisión de las predicciones.
 
-El modelo principal es una red neuronal de tipo LSTM, adecuada para el análisis de series temporales. Además, se incorporan técnicas de procesamiento de lenguaje natural (PLN) para analizar el sentimiento de las noticias financieras y medir su impacto en los precios de las acciones.
+El modelo principal es una red LSTM, adecuada para el análisis de series temporales. Además, se incorporan técnicas de procesamiento de lenguaje natural (PLN) para analizar el sentimiento de las noticias financieras y medir su impacto en los precios de las acciones.
 
 Los principales objetivos del proyecto son:
 
@@ -34,28 +35,34 @@ Los principales objetivos del proyecto son:
 2. **Incorporar análisis de sentimientos** de noticias relacionadas con las empresas seleccionadas para mejorar la predicción.
 3. **Comparar el rendimiento** de un modelo basado únicamente en datos financieros versus uno que también incluye datos de sentimientos.
 
-### Datos Utilizados
-
-Los siguientes datos se emplean en este estudio:
-
-- **Datos financieros**: Extraídos de Yahoo Finance, incluyendo precios históricos, volúmenes, y otros indicadores técnicos.
-- **Noticias y análisis de sentimientos**: Análisis de noticias relacionadas con las empresas seleccionadas, usando la herramienta de análisis de sentimientos VADER.
-
-![Datos de Acciones](ruta/a/imagen_datos_acciones.png)
-
 
 ## Preparación de Datos
 
-En este proyecto se utilizaron dos tipos principales de datos: datos financieros históricos y análisis de sentimientos de noticias. A continuación, se detallan los pasos clave de la preparación de datos.
-
 ### 1. Fuentes de Datos
 
-- **Yahoo Finance**: Precios históricos ajustados y volumen de transacciones de las acciones de AMZN, AAPL y GOOGL.
-- **Análisis de Sentimientos de Noticias**: Se utilizó VADER para analizar noticias relacionadas con las empresas, obteniendo una puntuación de sentimiento para cada noticia.
+Este proyecto utilizó datos financieros históricos de seis acciones principales, así como noticias y comentarios de Reddit para realizar el análisis de sentimientos. A continuación se describen las fuentes de datos utilizadas:
+
+- **Yahoo Finance**: Se extrajeron datos de los precios históricos ajustados y el volumen de transacciones para los siguientes seis tickers:
+  - **AMZN** (Amazon.com Inc.)
+  - **GOOGL** (Alphabet Inc.)
+  - **NVDA** (NVIDIA Corporation)
+  - **MSFT** (Microsoft Corporation)
+  - **NFLX** (Netflix Inc.)
+  - **GME** (GameStop Corp.)
+
+  Los datos financieros abarcan el período desde **enero de 2020 hasta enero de 2023**, un rango que cubre eventos relevantes como la pandemia de COVID-19 y el auge de las "acciones meme" como GameStop.
+
+- **Medias Móviles**: Se incluyeron medias móviles simples (SMA) en el análisis técnico. Las medias móviles se calcularon sobre periodos de 10, 30 y 60 días para ayudar a suavizar las fluctuaciones a corto plazo y captar las tendencias más amplias en los precios de las acciones. Estas medias se utilizaron como indicadores adicionales en el modelo para mejorar la capacidad predictiva.
+
+- **Análisis de Sentimientos de Noticias**: Se recopilaron noticias relacionadas con las empresas mencionadas y se analizaron utilizando **VADER** para generar puntuaciones de sentimiento (positivo, negativo, neutral y compuesto). Estas puntuaciones se integraron con los datos financieros para evaluar su impacto en las predicciones de precios.
+
+- **Comentarios de Reddit**: Además de las noticias, también se recopilaron comentarios de la red social **Reddit** en subreddits relacionados con el mercado de valores, como **r/stocks** y **r/investing**. Los comentarios de Reddit proporcionaron una perspectiva adicional sobre el sentimiento popular y se analizaron utilizando **VADER** para extraer puntuaciones de sentimiento, que también se integraron en el modelo.
+
+
 
 ### 2. Extracción de Datos Financieros
 
-Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. A continuación, se muestra un ejemplo del código utilizado para obtener los datos:
+Para extraer los datos financieros históricos, se utilizó la biblioteca `yahoo_fin`. :
 
 ```python
 import pandas as pd
@@ -86,17 +93,6 @@ print(sentimiento)
 Resultado:
 {'neg': 0.0, 'neu': 0.461, 'pos': 0.539, 'compound': 0.7269}
 
-### 5. Integración de Datos
-Finalmente, los datos financieros y los datos de sentimientos se integraron en un solo conjunto de datos, que se utilizó para entrenar el modelo LSTM:
-
-```python
-# Unir los datos financieros y los de sentimiento
-datos_combinados = pd.merge(precios['AAPL'], sentimientos_df, left_index=True, right_index=True)
-
-# Mostrar los primeros registros de los datos combinados
-datos_combinados.head()
-```
-
 
 ## Modelo de LSTM para la Predicción de Precios
 
@@ -122,7 +118,7 @@ class LSTMModel(pl.LightningModule):
 ```
 
 2. Entrenamiento del Modelo
-El modelo se entrenó utilizando los datos combinados (financieros y de sentimientos) previamente preparados. El entrenamiento se realizó durante 100 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
+El entrenamiento se realizó durante 100 épocas utilizando optimización Adam y la función de pérdida de error cuadrático medio (MSE).
 
 ```python
 from torch.optim import Adam
@@ -147,20 +143,6 @@ Tras el entrenamiento, el modelo logró capturar las tendencias de los precios d
 
 El gráfico muestra que el modelo es capaz de seguir las tendencias generales, aunque aún puede mejorarse al incorporar más datos o ajustar los hiperparámetros.
 
-4. Evaluación del Modelo
-El rendimiento del modelo se evaluó utilizando la métrica de error cuadrático medio (MSE). A continuación, se muestra un fragmento del código utilizado para evaluar el rendimiento del modelo en el conjunto de prueba:
-
-```python
-from sklearn.metrics import mean_squared_error
-
-# Realizar predicciones en el conjunto de prueba
-y_pred = model(x_test)
-
-# Calcular el error cuadrático medio
-mse = mean_squared_error(y_test, y_pred.detach().numpy())
-print(f"Error cuadrático medio: {mse}")
-```
-El MSE final fue de aproximadamente 0.0043, lo que indica un buen ajuste, aunque aún se podría mejorar con más datos o un ajuste más preciso de los hiperparámetros.
 
 ## Incorporación del Análisis de Sentimientos
 
