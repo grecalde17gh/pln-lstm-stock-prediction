@@ -1,6 +1,6 @@
-# Predicción del Precio de Acciones usando Análisis de Sentimientos y Redes LSTM
+# Portaflio de inversiones usando análisis de sentimientos y redes LSTM
 
-### Proyecto Final de la Materia de Procesamiento de Lenguaje Natural
+### Proyecto final de la materia de Procesamiento de Lenguaje Natural
 
 ---
 
@@ -219,19 +219,27 @@ for post in reddit_posts[:5]:
     print(f"Cuerpo: {post['cuerpo']}\n")
 ```
 Fecha: 1724950083.0
+
 Título: AAPL; please stay up this time to keep over 7 figures
+
 Cuerpo: 
 
 Fecha: 1722691855.0
+
 Título: My theory why buffet sold aapl
-Cuerpo: Everyone is freaking out about recession and also citing buffet selling half his stake in aapl as proof. But the reality is buffet doesn't time the market he holds good companies through recessions. But if you look at a lot of his other moves, sold all his TSM and a large portion of BYD as well. Its clear that buffet has geopolitical risks on the top of his mind, aapl would be obliterated in the case of a taiwan war. 
+
+Cuerpo: Everyone is freaking out about recession and also citing buffet selling half his stake in aapl as proof. But the reality is buffet doesn't time the market he holds good companies through recessions. But if you look at a lot of his other moves, sold all his TSM and a large portion of BYD as well. Its 
+
+clear that buffet has geopolitical risks on the top of his mind, aapl would be obliterated in the case of a taiwan war. 
 
 Afterall, why wouldn't he sell his American express position in a material way, wouldn't they get hit hard in a recession as well with delinquencies and decreased consumer spending? 
 
 I guess this post doesn't really offer much reassurance as a taiwan war would be worse than a recession. But honestly I think you should trade like it wouldn't happen because if it does it would probably devolve into nuclear war and currency would be irrelevant at that point. Just my 2 cents.
 
 Fecha: 1722348117.0
+
 Título: aapl earnings YOLO
+
 Cuerpo: I am a regard but maybe we’ll be lucky also I have no reasoning just hoping for good earnings 
 
 ###  Incorporación de las Puntuaciones de Sentimiento
