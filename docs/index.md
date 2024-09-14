@@ -76,25 +76,6 @@ def download_data(ticker):
     return data
 ```
 
-### Análisis de Sentimientos
-Para incorporar el análisis de sentimientos, se utilizaron noticias financieras recientes, y se analizó el sentimiento utilizando la herramienta VADER. Aquí un ejemplo de una noticia extraída:
-
-Noticia: "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
-
-El análisis de sentimientos generó el siguiente resultado:
-
-```python
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-analyzer = SentimentIntensityAnalyzer()
-noticia = "Apple's new iPhone sales exceeded expectations, boosting investor confidence."
-sentimiento = analyzer.polarity_scores(noticia)
-print(sentimiento)
-```
-
-Resultado:
-{'neg': 0.0, 'neu': 0.461, 'pos': 0.539, 'compound': 0.7269}
-
-
 ## Modelo de LSTM para la Predicción de Precios
 
 ### Estructura del Modelo
@@ -257,10 +238,15 @@ Cuerpo: I am a regard but maybe we’ll be lucky also I have no reasoning just h
 Una vez obtenido el análisis de sentimientos, las puntuaciones (positiva, negativa, neutral y compuesta) se integran con los datos financieros previamente preparados. Este conjunto de datos combinado sirve como entrada al modelo LSTM.
 
 Fecha: 2024-09-13 21:45:19, Sentimiento: -0.6671, Titulo: Apple (AAPL) Stock Drops Despite Market Gains: Important Facts to Note
+
 Fecha: 2024-09-13 20:04:10, Sentimiento: 0.0, Titulo: Apple Begins Taking Preorders For AI-Enabled iPhone 16 Handsets
+
 Fecha: 2024-09-13 17:49:22, Sentimiento: 0.296, Titulo: Apple Seeks Dismissal of Lawsuit Against Israeli Cyber Intelligence Firm NSO Group
+
 Fecha: 2024-08-29 16:48:03, Sentimiento: 0.3182, Título: AAPL; please stay up this time to keep over 7 figures
+
 Fecha: 2024-08-03 13:30:55, Sentimiento: -0.9488, Título: My theory why buffet sold aapl
+
 Fecha: 2024-07-30 14:01:57, Sentimiento: 0.8625, Título: aapl earnings YOLO
 
 ###  Gráfico de Análisis de Sentimientos
@@ -272,24 +258,24 @@ El siguiente gráfico muestra la evolución de las puntuaciones de sentimientos 
 Incorporar los datos de sentimientos permitió mejorar la precisión del modelo al capturar el impacto de las noticias en el comportamiento del mercado. Los gráficos siguientes comparan las predicciones de dos modelos: uno que utiliza únicamente datos financieros y otro que incorpora el análisis de sentimientos.
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <img src="AMZN.jpg" alt="AMZN" style="width: 40%;">
-  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 40%;">
-  <img src="NFLX.jpg" alt="NFLX" style="width: 40%;">
-  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 40%;">
-  <img src="googl.jpg" alt="GOOGL" style="width: 40%;">
-  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 40%;">
-  <img src="NVDA.jpg" alt="NVDA" style="width: 40%;">
-  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 40%;">
-  <img src="AAPL.jpg" alt="AAPL" style="width: 40%;">
-  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 40%;">
-  <img src="GME.jpg" alt="GME" style="width: 40%;">
-  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 40%;">
+  <img src="AMZN.jpg" alt="AMZN" style="width: 45%;">
+  <img src="AMZNpnl.jpg" alt="AMZNpnl" style="width: 45%;">
+  <img src="NFLX.jpg" alt="NFLX" style="width: 45%;">
+  <img src="NFLXpnl.jpg" alt="NFLXpnl" style="width: 45%;">
+  <img src="googl.jpg" alt="GOOGL" style="width: 45%;">
+  <img src="GOOGLpnl.jpg" alt="GOOGLpnl" style="width: 45%;">
+  <img src="NVDA.jpg" alt="NVDA" style="width: 45%;">
+  <img src="NVDApnl.jpg" alt="NVDApnl" style="width: 45%;">
+  <img src="AAPL.jpg" alt="AAPL" style="width: 45%;">
+  <img src="AAPLpnl.jpg" alt="AAPLpnl" style="width: 45%;">
+  <img src="GME.jpg" alt="GME" style="width: 45%;">
+  <img src="GMEpnl.jpg" alt="GMEpnl" style="width: 45%;">
 </div>
 
 
 ## Comparación de Modelos: Métrica MSE
 
-En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 3.1 (datos financieros + análisis de sentimientos).
+En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (MSE)** para las cinco acciones, comparando el Modelo 1 (solo datos financieros) y el Modelo 2 (datos financieros + análisis de sentimientos).
 
 | Acción  | MSE (M1)   | MSE (M2)   |
 |---------|------------|------------|
@@ -334,7 +320,8 @@ Para algunas acciones, como NFLX y GOOGL, la diferencia entre los modelos es men
 1. **Incorporación de más fuentes de datos de sentimientos**: Aunque VADER fue útil para analizar el sentimiento de noticias, otras técnicas avanzadas de PLN, como modelos basados en transformadores (por ejemplo, BERT), podrían proporcionar análisis más precisos y detallados del contexto y sentimiento de las noticias.
 2. **Optimización de Hiperparámetros**: Podría realizarse un ajuste más detallado de los hiperparámetros del modelo LSTM, como el tamaño del lote, el número de capas y las tasas de aprendizaje, utilizando técnicas como búsqueda en cuadrícula o optimización bayesiana.
 3. **Posibles mejoras**: Dado que el análisis de sentimientos no ha funcionado de manera consistente en todas las acciones, sería útil explorar otras fuentes de datos o enfoques para incorporar el análisis de sentimientos (por ejemplo, usando otro modelo de análisis de sentimientos más avanzado o ajustando el preprocesamiento de los datos de noticias).
-4. **Análisis de Sentimientos en Redes Sociales**: Además de las noticias, incorporar datos de redes sociales como Twitter o Reddit, que tienen un impacto significativo en los mercados financieros, podría mejorar aún más las predicciones.
-
+4. **Análisis de Sentimientos en Redes Sociales**: Además de las noticias, incorporar datos de redes sociales como X o plataformas especializadas, que tienen un impacto significativo en los mercados financieros, podría mejorar aún más las predicciones.
+   
 En resumen, el Modelo 2 muestra una mejora notable en algunas acciones (particularmente las más volátiles), pero no en todas. Es importante analizar cada acción individualmente y considerar otros factores para mejorar el rendimiento general del modelo que incluye el análisis de sentimientos.
+
 ---
