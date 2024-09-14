@@ -310,15 +310,15 @@ En la tabla siguiente se muestran los resultados del **Error Cuadrático Medio (
 ## Pruebas adicionales
 Se realizaro algunas pruebas para intentar optimizar el modelo que incluyeron:
 
-Ajuste del tamaño de las capas ocultas
+- Ajuste del tamaño de las capas ocultas
 
-Tuning del learning rate
+- Tuning del learning rate
 
-Incorporar Dropout
+- Incorporar Dropout
 
-Early Stopping
+- Early Stopping
 
-Aumento de epocas
+- Aumento de epocas
 
 sin embargo el desempeño no mejoro en ninguno de lo casos, lo que indica que al complejizarse las red probablemente se genera overfitting y ruido que impide la mejora.
 
